@@ -6,13 +6,15 @@ Notes:
 - These prompts are intended to be pasted **verbatim** into Claude Code, in order.
 - The prompts assume each step’s output is committed before moving to the next.
 - Replace `{{PROJECT_ROOT}}` with your repo path when required.
-- If this repo only contains PDFs (as it does now), start at Prompt 1 when you’re ready to generate the actual codebase.
+- **This repo already contains a greenfield Pit Lane Manager app under `src/`.** Treat **Prompt 1** as historical / optional unless you are actually porting from a private Dynasty Manager tree; otherwise start at the prompt that matches your gap (often Prompt 2+ for types, or later prompts for depth).
 
 ---
 
 ## Prompt 1 — Fork setup and cleanup
 
-You are working in the Dynasty Manager codebase (React 18 / Vite / TS / Tailwind v4 / shadcn-ui / Zustand / Framer Motion / Capacitor 7). We are forking it into \"Pit Lane Manager,\" an unlicensed F1 management sim.
+> **Optional:** Only follow this prompt if your starting point is a real Dynasty Manager (football) codebase. If you are working in this repository’s existing Pit Lane Manager app, skip to later prompts.
+
+You are working in the Dynasty Manager codebase (React 18 / Vite / TS / Tailwind v4 / shadcn-ui / Zustand / Framer Motion / Capacitor 7). We are forking it into \"Pit Lane Manager,\" an unlicensed **championship-style open-wheel** racing management sim (see `CLAUDE.md` for legal naming — do not use protected series marks in UI or marketing).
 
 Tasks:
 1. Update package.json name to \"pit-lane-manager\", version 0.1.0, and description.
@@ -278,7 +280,7 @@ Create CLAUDE.md at the project root with the full context a future Claude Code 
 
 # Pit Lane Manager — Claude Code Context
 ## Project
-Mobile F1 management sim (unlicensed) built on React 18 + Vite + TypeScript + Tailwind v4 + shadcn-ui + Zustand + Framer Motion + Capacitor 7. Forked from Dynasty Manager (football management game). Target: iOS App Store + Google Play, free-to-play with IAP.
+Mobile **unlicensed championship-style open-wheel** racing management sim built on React 18 + Vite + TypeScript + Tailwind v4 + shadcn-ui + Zustand + Framer Motion + Capacitor 7. Product positioning: fictional spec racing team management (not a port of another shipped game unless you brought that codebase in separately). Target: iOS App Store + Google Play, free-to-play with IAP where allowed.
 ## Legal boundary
 Never introduce \"F1\", \"Formula 1\", \"Formula One\", \"FIA\", \"Grand Prix\" as brand elements. Real country/city names are OK. Real circuit names are NOT (they're trademarked — use our fictional circuit names from data/circuits.json). Real driver names are NEVER OK. Never match real team three-letter codes (FER, MER, MCL, RBR, ALP, AST, WIL, ALF, HAA, SAU). All driver portraits/helmets/suits must be original art.
 ## Architecture invariants
@@ -345,5 +347,5 @@ Create TASK.md at the project root as a live working document. Structure:
 # Done (last 20)
 (Archive)
 
-Seed the Backlog with the week-by-week tasks from the 8-week roadmap. Seed Done with \"Forked from Dynasty Manager\" as the first entry.
+Seed the Backlog with the week-by-week tasks from the 8-week roadmap. Seed Done with a first entry that matches reality (e.g. \"Greenfield Pit Lane Manager scaffold in repo\") unless you actually completed a Dynasty fork migration.
 

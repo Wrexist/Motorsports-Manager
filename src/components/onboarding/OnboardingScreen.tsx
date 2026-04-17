@@ -8,10 +8,11 @@ export function OnboardingScreen() {
       <Card className="max-w-lg w-full border-zinc-800">
         <CardHeader>
           <CardTitle>Welcome to Pit Lane Manager</CardTitle>
-          <CardDescription>Fictional open-wheel team management</CardDescription>
+          <CardDescription>Fictional open-wheel racing — team principal sim</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 text-sm text-zinc-300 leading-relaxed">
           <p>
+            Lead a two-car team through a season calendar: car development, contracts, sponsors, and race weekends.
             This game is not affiliated with any real racing series, governing body, circuit, team, or driver. All
             names, colors, and statistics are fictional.
           </p>

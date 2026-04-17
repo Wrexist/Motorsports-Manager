@@ -20,8 +20,8 @@ Append-only notes on non-obvious decisions, gotchas, and reversals discovered du
 - ID generation should use `crypto.randomUUID()` when available (still not gameplay RNG; saves/tests need stable strategies separately).
 
 ## 2026-04-17 — Fork vs greenfield (program decision)
-- **Greenfield** was chosen for this repo: there is no Dynasty Manager application tree in the workspace, only research and agent prompts, so a fork would be fictional overhead.
-- The implementation **matches the intended stack** from `CLAUDE.md` / the prompt library (Vite, React 18, TS, Tailwind v4, shadcn-style primitives, Zustand + immer + persist + devtools, Capacitor 7) so Prompts 2 onward apply without football cleanup steps.
+- **Greenfield** Pit Lane Manager lives in `src/`; there is no Dynasty Manager application tree in this workspace. Prompt library **Prompt 1** is for teams who actually fork football code; here we skip it and treat the app as the **championship-style open-wheel** product from day one (legal naming still per `CLAUDE.md`).
+- The implementation **matches the intended stack** from `CLAUDE.md` / the prompt library (Vite, React 18, TS, Tailwind v4, shadcn-style primitives, Zustand + immer + persist + devtools, Capacitor 7).
 - If a private Dynasty codebase becomes available later, selective porting (e.g. native plugins or proven Capacitor patterns) can be done as a migration, not a restart.
 
 ## 2026-04-17 — Persisted shape

@@ -1,6 +1,6 @@
 # Working in this repo (agents)
 
-This repository is currently a **research + prompt library** for building an unlicensed F1-style management sim. The authoritative agent rules live in `CLAUDE.md`.
+This repository is a **runnable Pit Lane Manager app** (`src/`) **plus** research PDFs and agent documentation for an unlicensed **championship-style open-wheel** management sim. The authoritative agent rules live in `CLAUDE.md`.
 
 ## Start here
 - Read `CLAUDE.md` first (legal + architecture invariants).
