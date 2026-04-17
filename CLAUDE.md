@@ -1,9 +1,9 @@
 # Pit Lane Manager — Claude Code Context
 
-This repository currently contains **research PDFs only** plus git metadata. Until the actual codebase is created (via the prompt library), do **not** invent files/paths that don’t exist yet. If you need code, follow the prompt library in `docs/agents/pit-lane-manager-prompt-library.md` to generate it step-by-step.
+This repository contains a **runnable game app** under `src/` (Vite + React + TypeScript) **plus** research PDFs and agent docs. When adding features, follow `CLAUDE.md` first, then the staged prompts in `docs/agents/pit-lane-manager-prompt-library.md` where they still apply.
 
 ## Project
-Mobile unlicensed F1-style management sim built on React 18 + Vite + TypeScript + Tailwind v4 + shadcn/ui + Zustand + Framer Motion + Capacitor 7.
+Mobile **unlicensed championship-style open-wheel racing** team management sim built on React 18 + Vite + TypeScript + Tailwind v4 + shadcn/ui + Zustand + Framer Motion + Capacitor 7.
 
 Product goals (MVP framing):
 - Short, tactical race sessions (target ~3–5 minutes for “short” races).
@@ -17,7 +17,7 @@ Non-negotiable constraints for all UI copy, data, and marketing assets:
 - Real **driver names are never OK**.
 - Never match real teams by identity stacking (name + colors + codes + logos + implied nationality + stats).
 - Never use real team three-letter codes (avoid: FER, MER, MCL, RBR, ALP, AST, WIL, ALF, HAA, SAU).
-- Include a disclaimer in splash/store/credits: “Not affiliated with Formula 1, the FIA, or any real team or driver.”
+- Include a disclaimer in splash/store/credits; use the safe wording in `docs/legal/naming-disclaimer.md` (avoid spelling out protected series marks in marketing strings).
 
 See `docs/legal/naming-disclaimer.md` for checklist + disclaimer text.
 

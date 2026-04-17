@@ -56,7 +56,7 @@ export function CareerScreen() {
       <header className="sticky top-0 z-40 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur px-4 py-3">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
           <div>
-            <div className="text-xs uppercase tracking-wide text-zinc-500">Career</div>
+            <div className="text-xs uppercase tracking-wide text-zinc-500">Open-wheel career</div>
             <div className="text-lg font-semibold leading-tight">{teamName}</div>
           </div>
           <div className="text-right text-sm">

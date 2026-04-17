@@ -38,6 +38,7 @@ Ship v1.0 iOS App Store candidate: playable season loop + persistence + sim dete
 ## Session log
 - 2026-04-17 00:00 — started
 - 2026-04-17 — locked v1.0 scope contract at top of `TASK.md`
+- 2026-04-17 — clarified greenfield vs Dynasty fork; README + product copy (open-wheel racing)
 
 ## Definition of done
 - [ ] Tests green
@@ -51,7 +52,7 @@ Ship v1.0 iOS App Store candidate: playable season loop + persistence + sim dete
 Seeded from the “Pit Lane Manager” 8-week roadmap (Blueprint PDF).
 
 - Greenfield app scaffolded (Vite + React + Capacitor + Zustand persist + sim + core screens).
-- Fork Dynasty Manager and remove football-specific modules (Prompts 1–3 foundation).
+- ~~Fork Dynasty Manager~~ **Optional:** only if porting from a real Dynasty codebase; otherwise Prompt 1 is skipped (see prompt library notes).
 - Implement pure-functional race sim engine and determinism tests (Prompt 4).
 - Build live race UI and loop with performance constraints (Prompt 5).
 - Implement car development module and wire progression (Prompt 6).
@@ -63,5 +64,5 @@ Seeded from the “Pit Lane Manager” 8-week roadmap (Blueprint PDF).
 - Global launch prep (Week 8): ASO assets, store checklists, rollout plan.
 
 # Done (last 20)
-- Forked from Dynasty Manager (placeholder)
+- Product docs: greenfield open-wheel sim (not a Dynasty source fork); README + CLAUDE/AGENTS/prompt library alignment
 
