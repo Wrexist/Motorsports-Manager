@@ -38,6 +38,7 @@ Ship v1.0 iOS App Store candidate: playable season loop + persistence + sim dete
 ## Session log
 - 2026-04-17 00:00 — started
 - 2026-04-17 — locked v1.0 scope contract at top of `TASK.md`
+- 2026-04-17 — Phase D: canon JSON (`src/data/canon`) + `loadCanon()` Zod; Phase G: `device-qa-matrix.md` + `npm run verify`
 
 ## Definition of done
 - [ ] Tests green
@@ -63,5 +64,7 @@ Seeded from the “Pit Lane Manager” 8-week roadmap (Blueprint PDF).
 - Global launch prep (Week 8): ASO assets, store checklists, rollout plan.
 
 # Done (last 20)
+- Phase D partial: circuits + sponsors in validated JSON; championship standings UI on calendar
+- Phase G starter: device QA matrix template + `npm run verify`
 - Forked from Dynasty Manager (placeholder)
 

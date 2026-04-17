@@ -1,10 +1,10 @@
 import { addDays, formatISO } from "date-fns";
+import { loadCanon } from "@/data/loadCanon";
 import type {
   Car,
   CarId,
   Championship,
   ChampionshipId,
-  Circuit,
   CircuitId,
   Contract,
   ContractId,
@@ -41,31 +41,6 @@ const CHAMP_1 = "ch_2026" as ChampionshipId;
 
 function isoDate(d: Date): string {
   return formatISO(d, { representation: "date" });
-}
-
-function fictionalCircuits(): Record<string, Circuit> {
-  const mk = (id: string, name: string, country: string, base: number, overtake: number, weatherVol: number): Circuit => ({
-    id: id as CircuitId,
-    displayName: name,
-    country,
-    baseLapTimeSec: base,
-    overtakingDifficulty: overtake,
-    weatherVolatility: weatherVol,
-    svgTrackKey: `${id}_track`,
-  });
-
-  return {
-    c1: mk("c1", "Desert Ribbon Circuit", "Bahrain", 92.1, 0.55, 0.35),
-    c2: mk("c2", "Marina Street Circuit", "Singapore", 104.3, 0.35, 0.55),
-    c3: mk("c3", "Forest Crest Raceway", "Belgium", 108.8, 0.65, 0.65),
-    c4: mk("c4", "Harbour Loop Circuit", "Australia", 95.4, 0.45, 0.45),
-    c5: mk("c5", "Alpine Rise Circuit", "Austria", 97.9, 0.6, 0.55),
-    c6: mk("c6", "National Circuit", "United Kingdom", 96.2, 0.62, 0.55),
-    c7: mk("c7", "Riviera Street Circuit", "Monaco", 78.4, 0.25, 0.25),
-    c8: mk("c8", "Temple Circuit", "Japan", 99.1, 0.58, 0.55),
-    c9: mk("c9", "Lakeside Circuit", "Canada", 93.7, 0.52, 0.45),
-    c10: mk("c10", "Highland Circuit", "Brazil", 101.2, 0.6, 0.6),
-  };
 }
 
 function mkDriver(params: {
@@ -156,25 +131,12 @@ function mkContract(params: {
   };
 }
 
-function mkSponsor(params: { id: SponsorId; name: string; teamId: TeamId }): Sponsor {
-  return {
-    id: params.id,
-    displayName: params.name,
-    tier: 2,
-    seasonPaymentCents: makeMoney(6_000_00),
-    bonuses: {
-      winCents: makeMoney(350_000_00),
-      podiumCents: makeMoney(150_000_00),
-      poleCents: makeMoney(75_000_00),
-    },
-    minMarketability: 40,
-    seasonsRemaining: 1,
-    teamId: params.teamId,
-  };
-}
-
 export function createSeedSaveGame(): SaveGame {
-  const circuits = fictionalCircuits();
+  const { circuits, sponsors: sponsorList } = loadCanon();
+  const sponsors: Record<string, Sponsor> = {};
+  for (const s of sponsorList) {
+    sponsors[String(s.id)] = s;
+  }
   const seasonStart = new Date("2026-03-07T00:00:00.000Z");
 
   const drivers: Record<string, Driver> = {
@@ -293,26 +255,10 @@ export function createSeedSaveGame(): SaveGame {
     }),
   };
 
-  const sponsors: Record<string, Sponsor> = {
-    sp_title: mkSponsor({ id: "sp_title" as SponsorId, name: "Condor Telecoms", teamId: TEAM_A }),
-    sp_loom: {
-      id: "sp_loom" as SponsorId,
-      displayName: "Loom Analytics",
-      tier: 3,
-      seasonPaymentCents: makeMoney(3_500_00),
-      bonuses: {
-        winCents: makeMoney(120_000_00),
-        podiumCents: makeMoney(60_000_00),
-        poleCents: makeMoney(30_000_00),
-      },
-      minMarketability: 35,
-      seasonsRemaining: 1,
-      teamId: null,
-    },
-  };
-
-  // Attach sponsor to player team for MVP payouts.
-  teams[TEAM_A]!.sponsorIds = ["sp_title" as SponsorId];
+  // Attach title sponsor to player team for MVP payouts (canon may already set teamId on sp_title).
+  if (!teams[TEAM_A]!.sponsorIds.length) {
+    teams[TEAM_A]!.sponsorIds = ["sp_title" as SponsorId];
+  }
 
   const circuitIds = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10"] as CircuitId[];
   const raceIds: RaceId[] = Array.from({ length: 10 }, (_, i) => `rc_${i + 1}` as RaceId);

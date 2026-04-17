@@ -1,0 +1,92 @@
+{
+  "c1": {
+    "id": "c1",
+    "displayName": "Desert Ribbon Circuit",
+    "country": "Bahrain",
+    "baseLapTimeSec": 92.1,
+    "overtakingDifficulty": 0.55,
+    "weatherVolatility": 0.35,
+    "svgTrackKey": "c1_track"
+  },
+  "c2": {
+    "id": "c2",
+    "displayName": "Marina Street Circuit",
+    "country": "Singapore",
+    "baseLapTimeSec": 104.3,
+    "overtakingDifficulty": 0.35,
+    "weatherVolatility": 0.55,
+    "svgTrackKey": "c2_track"
+  },
+  "c3": {
+    "id": "c3",
+    "displayName": "Forest Crest Raceway",
+    "country": "Belgium",
+    "baseLapTimeSec": 108.8,
+    "overtakingDifficulty": 0.65,
+    "weatherVolatility": 0.65,
+    "svgTrackKey": "c3_track"
+  },
+  "c4": {
+    "id": "c4",
+    "displayName": "Harbour Loop Circuit",
+    "country": "Australia",
+    "baseLapTimeSec": 95.4,
+    "overtakingDifficulty": 0.45,
+    "weatherVolatility": 0.45,
+    "svgTrackKey": "c4_track"
+  },
+  "c5": {
+    "id": "c5",
+    "displayName": "Alpine Rise Circuit",
+    "country": "Austria",
+    "baseLapTimeSec": 97.9,
+    "overtakingDifficulty": 0.6,
+    "weatherVolatility": 0.55,
+    "svgTrackKey": "c5_track"
+  },
+  "c6": {
+    "id": "c6",
+    "displayName": "National Circuit",
+    "country": "United Kingdom",
+    "baseLapTimeSec": 96.2,
+    "overtakingDifficulty": 0.62,
+    "weatherVolatility": 0.55,
+    "svgTrackKey": "c6_track"
+  },
+  "c7": {
+    "id": "c7",
+    "displayName": "Riviera Street Circuit",
+    "country": "Monaco",
+    "baseLapTimeSec": 78.4,
+    "overtakingDifficulty": 0.25,
+    "weatherVolatility": 0.25,
+    "svgTrackKey": "c7_track"
+  },
+  "c8": {
+    "id": "c8",
+    "displayName": "Temple Circuit",
+    "country": "Japan",
+    "baseLapTimeSec": 99.1,
+    "overtakingDifficulty": 0.58,
+    "weatherVolatility": 0.55,
+    "svgTrackKey": "c8_track"
+  },
+  "c9": {
+    "id": "c9",
+    "displayName": "Lakeside Circuit",
+    "country": "Canada",
+    "baseLapTimeSec": 93.7,
+    "overtakingDifficulty": 0.52,
+    "weatherVolatility": 0.45,
+    "svgTrackKey": "c9_track"
+  },
+  "c10": {
+    "id": "c10",
+    "displayName": "Highland Circuit",
+    "country": "Brazil",
+    "baseLapTimeSec": 101.2,
+    "overtakingDifficulty": 0.6,
+    "weatherVolatility": 0.6,
+    "svgTrackKey": "c10_track"
+  }
+}
