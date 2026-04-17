@@ -27,9 +27,10 @@ Ship v1.0 iOS App Store candidate: playable season loop + persistence + sim dete
 - Phased roadmap narrative: `docs/roadmap/ios-app-store-roadmap.md`
 
 ## Plan
-- [ ] Finish store + UI vertical slice (continue → race → results → next race)
-- [ ] Add sim determinism tests + ban `Math.random` via ESLint
-- [ ] Fill iOS submission checklist + privacy manifest template once iOS project exists
+- [x] Finish store + UI vertical slice (continue → race → results → next race)
+- [x] Add sim determinism tests + ban `Math.random` via ESLint
+- [x] Runtime Zod validation on persist migrate + `npm run legal:scan`
+- [ ] Fill iOS submission checklist + copy privacy manifest into Xcode target once `ios/` exists (macOS)
 
 ## Blocked on
 - **iOS native project generation** requires macOS/Xcode for `npx cap add ios` (Windows can still produce the web build + compliance docs).

@@ -9,6 +9,7 @@ import type { Driver, DriverId } from "@/types/game";
 import { useGameStore } from "@/stores/useGameStore";
 
 export function DriverMarketScreen() {
+  const [signMessage, setSignMessage] = useState<string | null>(null);
   const { drivers, teams, playerTeamId, signDriver } = useGameStore(
     useShallow((s) => ({
       drivers: Object.values(s.save.drivers),
@@ -38,6 +39,11 @@ export function DriverMarketScreen() {
         <CardDescription>Scouting and contracts (MVP)</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {signMessage ? (
+          <div className="rounded-md border border-amber-900/50 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
+            {signMessage}
+          </div>
+        ) : null}
         <div className="flex flex-wrap gap-2">
           <input
             value={nat}
@@ -72,7 +78,17 @@ export function DriverMarketScreen() {
           </TableHeader>
           <TableBody>
             {rows.map((d) => (
-              <DriverRow key={d.id} driver={d} teams={teams} playerTeamId={playerTeamId} onSign={signDriver} />
+              <DriverRow
+                key={d.id}
+                driver={d}
+                teams={teams}
+                playerTeamId={playerTeamId}
+                onSign={(id, terms) => {
+                  const res = signDriver(id, terms);
+                  if (!res.ok) setSignMessage(res.reason);
+                  else setSignMessage("Contract signed.");
+                }}
+              />
             ))}
           </TableBody>
         </Table>
@@ -85,7 +101,10 @@ function DriverRow(props: {
   driver: Driver;
   teams: Record<string, { displayName: string }>;
   playerTeamId: string;
-  onSign: ReturnType<typeof useGameStore.getState>["signDriver"];
+  onSign: (
+    driverId: DriverId,
+    terms: { salaryPerSeasonCents: number; seasons: number; signingBonusCents: number },
+  ) => void;
 }) {
   const d = props.driver;
   const teamName = d.teamId ? props.teams[String(d.teamId)]?.displayName ?? "—" : "Free agent";
@@ -123,12 +142,11 @@ function DriverRow(props: {
                 type="button"
                 className="mt-4 w-full"
                 onClick={() => {
-                  const res = props.onSign(d.id as DriverId, {
+                  props.onSign(d.id as DriverId, {
                     salaryPerSeasonCents: 5_000_00,
                     seasons: 2,
                     signingBonusCents: 500_00,
                   });
-                  if (!res.ok) alert(res.reason);
                 }}
               >
                 Sign (MVP offer)
