@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+coverage
+*.log
+ios/App/Pods
+android/app/build
+android/.gradle
+.capacitor
