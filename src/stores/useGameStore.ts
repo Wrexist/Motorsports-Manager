@@ -1,9 +1,12 @@
-import { addDays, parseISO } from "date-fns";
+import { addDays, differenceInCalendarDays, parseISO } from "date-fns";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { createSeedSaveGame } from "@/data/seedSaveGame";
+import { migratePersistedSave, SAVE_PERSIST_VERSION, type PersistedSlice } from "@/lib/saveMigration";
+import { saveGameSchema } from "@/lib/saveGameSchema";
 import { createCapacitorPersistStorage } from "@/lib/storage";
+import { processWeeklyUpgrades } from "@/lib/weeklyUpgrades";
 import { CAR_DEV_CONSTANTS } from "@/sim/carDevConstants";
 import { buildRaceState, prizeMoneyCents, simulateRace } from "@/sim/race";
 import type {
@@ -14,8 +17,6 @@ import type {
   DriverRaceResult,
   FinancialTransaction,
   FinancialTransactionId,
-  Part,
-  PartId,
   PartSlot,
   Race,
   RaceResult,
@@ -30,14 +31,13 @@ import type {
 } from "@/types/game";
 import { makeMoney } from "@/types/game";
 
-type PersistedSlice = { save: SaveGame };
-
 type GameStore = {
   save: SaveGame;
   nextInterrupt: ScheduledInterrupt | null;
 
   refreshInterrupt: () => void;
   skipWeek: () => void;
+  advanceToNextInterrupt: () => void;
   completeNextRace: () => void;
 
   setOnboardingCompleted: (done: boolean) => void;
@@ -72,7 +72,8 @@ function nextIncompleteRace(save: SaveGame, season: Season): Race | null {
   return races[0] ?? null;
 }
 
-function recomputeInterrupt(save: SaveGame): ScheduledInterrupt | null {
+/** Exported for tests and tooling that need interrupt state without loading the store. */
+export function recomputeInterruptFromSave(save: SaveGame): ScheduledInterrupt | null {
   const season = assertSeason(save);
   const next = nextIncompleteRace(save, season);
   if (!next) return null;
@@ -137,10 +138,6 @@ function idUpgrade(): UpgradeId {
   return `up_${makeUuid()}` as UpgradeId;
 }
 
-function idPart(): PartId {
-  return `pt_${makeUuid()}` as PartId;
-}
-
 function playerBalance(save: SaveGame): number {
   const t = save.teams[String(save.playerTeamId)];
   return t ? Number(t.finance.balanceCents) : 0;
@@ -169,19 +166,34 @@ export const useGameStore = create<GameStore>()(
     persist(
       immer((set, get) => ({
         save: createSeedSaveGame(),
-        nextInterrupt: recomputeInterrupt(createSeedSaveGame()),
+        nextInterrupt: recomputeInterruptFromSave(createSeedSaveGame()),
 
         refreshInterrupt: () => {
           set((d) => {
-            d.nextInterrupt = recomputeInterrupt(d.save);
+            d.nextInterrupt = recomputeInterruptFromSave(d.save);
           });
         },
 
         skipWeek: () => {
           set((d) => {
+            processWeeklyUpgrades(d.save, 1);
             const cur = parseISO(`${d.save.currentDate}T00:00:00.000Z`);
             d.save.currentDate = addDays(cur, 7).toISOString().slice(0, 10);
-            d.nextInterrupt = recomputeInterrupt(d.save);
+            d.nextInterrupt = recomputeInterruptFromSave(d.save);
+          });
+        },
+
+        advanceToNextInterrupt: () => {
+          set((d) => {
+            const interrupt = recomputeInterruptFromSave(d.save);
+            if (!interrupt) return;
+            const target = parseISO(`${interrupt.date}T00:00:00.000Z`);
+            const cur = parseISO(`${d.save.currentDate}T00:00:00.000Z`);
+            if (cur.getTime() >= target.getTime()) return;
+            const days = differenceInCalendarDays(target, cur);
+            processWeeklyUpgrades(d.save, Math.floor(days / 7));
+            d.save.currentDate = interrupt.date;
+            d.nextInterrupt = recomputeInterruptFromSave(d.save);
           });
         },
 
@@ -197,6 +209,7 @@ export const useGameStore = create<GameStore>()(
           if (!driver) return { ok: false as const, reason: "Driver not found" };
           const upfront = terms.signingBonusCents + Math.floor(terms.salaryPerSeasonCents * 0.1);
           if (playerBalance(s0) < upfront) return { ok: false as const, reason: "Insufficient funds" };
+          let ok = false;
           set((d) => {
             if (!debitTeam(d.save, d.save.playerTeamId, upfront, `Sign ${String(driverId)}`)) return;
             const dr = d.save.drivers[driverId];
@@ -215,8 +228,9 @@ export const useGameStore = create<GameStore>()(
               podiumBonusCents: makeMoney(0),
             };
             d.save.contracts[c.id] = c;
+            ok = true;
           });
-          return { ok: true as const };
+          return ok ? ({ ok: true as const }) : ({ ok: false as const, reason: "Insufficient funds" });
         },
 
         startUpgrade: (slot, tier) => {
@@ -262,26 +276,11 @@ export const useGameStore = create<GameStore>()(
 
         advanceDay: (days = 1) => {
           set((d) => {
+            const n = Math.max(1, Math.floor(days));
+            processWeeklyUpgrades(d.save, Math.floor(n / 7));
             const cur = parseISO(`${d.save.currentDate}T00:00:00.000Z`);
-            d.save.currentDate = addDays(cur, days).toISOString().slice(0, 10);
-            if (days >= 7) {
-              for (const up of Object.values(d.save.upgrades)) {
-                if (up.cancelled) continue;
-                up.weeksRemaining = Math.max(0, up.weeksRemaining - 1);
-                if (up.weeksRemaining === 0) {
-                  const part: Part = {
-                    id: idPart(),
-                    teamId: d.save.playerTeamId,
-                    slot: up.slot,
-                    performance: up.projectedGain,
-                    lapsRemaining: 200,
-                  };
-                  d.save.parts[part.id] = part;
-                  delete d.save.upgrades[up.id];
-                }
-              }
-            }
-            d.nextInterrupt = recomputeInterrupt(d.save);
+            d.save.currentDate = addDays(cur, n).toISOString().slice(0, 10);
+            d.nextInterrupt = recomputeInterruptFromSave(d.save);
           });
         },
 
@@ -420,13 +419,13 @@ export const useGameStore = create<GameStore>()(
               }
             }
 
-            draft.nextInterrupt = recomputeInterrupt(draft.save);
+            draft.nextInterrupt = recomputeInterruptFromSave(draft.save);
           });
         },
       })),
       {
         name: "pit-lane-save-v1",
-        version: 2,
+        version: SAVE_PERSIST_VERSION,
         storage: createCapacitorPersistStorage<PersistedSlice>(),
         partialize: (state): PersistedSlice => ({ save: state.save }),
         migrate: (persisted, version) => {
@@ -438,16 +437,12 @@ export const useGameStore = create<GameStore>()(
           if (!slice.save) {
             return { save: createSeedSaveGame() };
           }
-          if (version < 2) {
-            return {
-              save: {
-                ...slice.save,
-                onboardingCompleted: slice.save.onboardingCompleted ?? false,
-                version: Math.max(slice.save.version, 2),
-              },
-            };
+          const parsed = saveGameSchema.safeParse(slice.save);
+          if (!parsed.success) {
+            return { save: createSeedSaveGame() };
           }
-          return slice;
+          const save = parsed.data as unknown as SaveGame;
+          return migratePersistedSave({ save }, version);
         },
       },
     ),
@@ -457,6 +452,6 @@ export const useGameStore = create<GameStore>()(
 
 useGameStore.persist.onFinishHydration(() => {
   useGameStore.setState({
-    nextInterrupt: recomputeInterrupt(useGameStore.getState().save),
+    nextInterrupt: recomputeInterruptFromSave(useGameStore.getState().save),
   });
 });

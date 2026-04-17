@@ -28,3 +28,16 @@ Pull items from `docs/agents/apex-gp-advanced-track.md` **only** when:
 - design agrees on added complexity.
 
 Each merge must update `CLAUDE.md` + save migrations + tests.
+
+---
+
+## Prompt library sequencing (implementation backlog)
+
+After the v1.0 vertical slice ships, follow `docs/agents/pit-lane-manager-prompt-library.md` in order for depth work. Treat each prompt as a **separate release** with save version bumps + migration tests:
+
+1. **Prompt 6** — Car development UI polish + weekly R&D rules aligned with `carDevSlice` / `CAR_DEV_CONSTANTS`.
+2. **Prompt 7** — Driver market negotiation depth, scouting, silly season.
+3. **Prompt 8** — Finance dashboard charts + sponsor slot grid + ledger UX.
+4. **Prompt 9** — Full interrupt system, `advanceUntilInterrupt`, season rollover, board events.
+
+Do not start the next prompt until the previous one meets its Definition of Done in the prompt library.

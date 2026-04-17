@@ -189,8 +189,9 @@ export function RaceScreen() {
             <div>
               <CardTitle>{sim.raceLabel}</CardTitle>
               <CardDescription>
-                Lap {Math.min(displayedLap, sim.totalLaps)} / {sim.totalLaps} — replay (does not advance career until
-                you use HQ → Simulate next race)
+                Lap {Math.min(displayedLap, sim.totalLaps)} / {sim.totalLaps} — replay only. Open the{" "}
+                <span className="text-zinc-200">HQ</span> tab and tap <span className="text-zinc-200">Simulate next race</span>{" "}
+                to record results and update the championship.
               </CardDescription>
             </div>
             <TimeControls

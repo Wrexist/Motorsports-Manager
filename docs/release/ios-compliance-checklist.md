@@ -6,6 +6,7 @@ Use this as a release gate before uploading a build to App Store Connect.
 - [ ] `npm run test` passes
 - [ ] `npm run build` passes
 - [ ] `npm run lint` passes
+- [ ] `npm run legal:scan` passes (coarse check for disallowed trademark tokens in `src/` + `index.html`)
 - [ ] App launches cold start without blank screen (hydration gate)
 
 ## B) Privacy manifest (`PrivacyInfo.xcprivacy`)
@@ -28,6 +29,8 @@ Common pitfalls:
 If the app supports account creation, Apple expects account deletion affordances. For **offline-only** games, ensure you don’t accidentally imply online accounts in UI.
 
 ## E) IAP / subscriptions (if enabled)
+
+**v1.0 default for this repo**: ship without in-app purchases first (`TASK.md` scope lock). Keep RevenueCat integration behind a feature flag until you explicitly enable monetization.
 - [ ] Restore Purchases visible
 - [ ] Subscription terms visible (length/price/what it unlocks)
 - [ ] Review notes include sandbox test account + purchase steps

@@ -21,18 +21,21 @@ export function TrackMap(props: {
         const t = Math.min(0.999, frac + jitter / 1000);
         const pt = pointOnPathApprox(t);
         return (
-          <motion.circle
+          <motion.g
             key={d.id}
             layoutId={`dot-${d.id}`}
-            r={8}
-            fill={d.color}
-            cx={pt.x}
-            cy={pt.y}
-            animate={reduce ? undefined : { opacity: [0.85, 1] }}
+            style={{ transformOrigin: `${pt.x}px ${pt.y}px` }}
+            animate={
+              reduce
+                ? { x: pt.x - 8, y: pt.y - 8 }
+                : { x: pt.x - 8, y: pt.y - 8, opacity: [0.85, 1] }
+            }
             transition={{ duration: 0.35 }}
           >
-            <title>{row ? `${d.label} ${row.lapTimeSec.toFixed(2)}s` : d.label}</title>
-          </motion.circle>
+            <circle r={8} fill={d.color} cx={8} cy={8}>
+              <title>{row ? `${d.label} ${row.lapTimeSec.toFixed(2)}s` : d.label}</title>
+            </circle>
+          </motion.g>
         );
       })}
     </svg>
