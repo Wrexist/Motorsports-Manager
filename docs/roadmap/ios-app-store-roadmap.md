@@ -53,6 +53,9 @@ Everything else is **versioned** (1.1, 1.2, …) so you don’t block shipping v
 **Exit**
 - Automated scan: no prohibited trademark strings in packaged strings (scripted check, add when repo grows).
 
+**Status (repo)**
+- Circuits + title sponsors load from `src/data/canon/*.json` via `loadCanon()` (Zod). Seed save composes drivers/teams/races in TS; extend JSON gradually for drivers/teams when migrations are ready.
+
 ## Phase E — Monetization (optional for v1.0)
 **Default recommendation**: ship v1.0 without IAP to reduce review risk, then add RevenueCat.
 

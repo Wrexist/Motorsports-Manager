@@ -9,6 +9,7 @@
     "build": "node ./node_modules/typescript/bin/tsc --noEmit && node ./node_modules/vite/bin/vite.js build",
     "lint": "eslint .",
     "legal:scan": "node ./scripts/scan-legal-strings.mjs",
+    "verify": "npm run test && npm run lint && npm run legal:scan && npm run build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",

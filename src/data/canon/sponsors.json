@@ -1,0 +1,30 @@
+[
+  {
+    "id": "sp_title",
+    "displayName": "Condor Telecoms",
+    "tier": 2,
+    "seasonPaymentCents": 600000,
+    "bonuses": {
+      "winCents": 35000000,
+      "podiumCents": 15000000,
+      "poleCents": 7500000
+    },
+    "minMarketability": 40,
+    "seasonsRemaining": 1,
+    "teamId": "tm_aeroswift"
+  },
+  {
+    "id": "sp_loom",
+    "displayName": "Loom Analytics",
+    "tier": 3,
+    "seasonPaymentCents": 350000,
+    "bonuses": {
+      "winCents": 12000000,
+      "podiumCents": 6000000,
+      "poleCents": 3000000
+    },
+    "minMarketability": 35,
+    "seasonsRemaining": 1,
+    "teamId": null
+  }
+]

@@ -7,7 +7,11 @@ Use this as a release gate before uploading a build to App Store Connect.
 - [ ] `npm run build` passes
 - [ ] `npm run lint` passes
 - [ ] `npm run legal:scan` passes (coarse check for disallowed trademark tokens in `src/` + `index.html`)
+- [ ] `npm run verify` passes (runs test + lint + legal scan + build in one command)
 - [ ] App launches cold start without blank screen (hydration gate)
+
+## A2) Device QA (manual)
+- [ ] Fill a row in `docs/release/device-qa-matrix.md` for at least one small phone + one Android device on the release candidate build
 
 ## B) Privacy manifest (`PrivacyInfo.xcprivacy`)
 > Add this file inside the iOS app target once `ios/` exists (`npx cap add ios` on macOS).

@@ -4,13 +4,14 @@ import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RaceResultScreen } from "@/components/game/calendar/RaceResultScreen";
+import { StandingsPanel } from "@/components/game/calendar/StandingsPanel";
 import type { Race, RaceId } from "@/types/game";
 import { useGameStore } from "@/stores/useGameStore";
 
 export function CalendarScreen() {
   const [view, setView] = useState<{ kind: "list" } | { kind: "result"; raceId: RaceId }>({ kind: "list" });
 
-  const { races, seasons, raceResults, advanceDay, skipWeek, advanceToNextInterrupt, nextInterrupt, playerTeamId } =
+  const { races, seasons, circuits, raceResults, advanceDay, skipWeek, advanceToNextInterrupt, nextInterrupt, playerTeamId } =
     useGameStore(
       useShallow((s) => {
         const season = Object.values(s.save.seasons)[0];
@@ -21,6 +22,7 @@ export function CalendarScreen() {
         return {
           races: raceList,
           seasons: s.save.seasons,
+          circuits: s.save.circuits,
           raceResults: s.save.raceResults,
           advanceDay: s.advanceDay,
           skipWeek: s.skipWeek,
@@ -77,6 +79,7 @@ export function CalendarScreen() {
         </CardHeader>
         <CardContent className="space-y-2">
           {races.map((r) => {
+            const circuitName = circuits[r.circuitId]?.displayName ?? "Venue TBA";
             const res = r.resultId ? raceResults[r.resultId] : undefined;
             const isPlayerHighlight =
               Boolean(res?.results.some((row) => String(row.teamId) === String(playerTeamId)));
@@ -103,7 +106,9 @@ export function CalendarScreen() {
                       </span>
                     ) : null}
                   </div>
-                  <div className="text-xs text-zinc-500">{r.scheduledDate}</div>
+                  <div className="text-xs text-zinc-500">
+                    {circuitName} · {r.scheduledDate}
+                  </div>
                 </div>
                 <div className="flex flex-col items-end gap-0.5 text-xs">
                   <span className={r.completed ? "text-emerald-400" : "text-zinc-500"}>
@@ -123,8 +128,12 @@ export function CalendarScreen() {
           <CardTitle>Championship</CardTitle>
           <CardDescription>
             {Object.keys(seasons).length} season record(s) in save — {completedCount}/{races.length} rounds complete.
+            Tables update after each simulated race.
           </CardDescription>
         </CardHeader>
+        <CardContent>
+          <StandingsPanel />
+        </CardContent>
       </Card>
     </div>
   );
