@@ -26,3 +26,4 @@ All player-facing text must follow `CLAUDE.md` and `docs/legal/naming-disclaimer
 - **Engineering law:** `CLAUDE.md`
 - **Session task list:** `TASK.md`
 - **Feature spec prompts:** `docs/agents/pit-lane-manager-prompt-library.md`
+- **Copy this repo into a new GitHub project:** `docs/agents/fork-into-new-repo.md` (and `scripts/new-project-from-this-repo.sh` for a file-only export)
